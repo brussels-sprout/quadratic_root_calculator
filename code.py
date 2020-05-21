@@ -3,41 +3,54 @@
 
 
 def title():
-    print("\033[1m" + "Real root calculator for quadratic functions" + "\033[0;0m" + "\nby brussels-sprout\n")
+    print("\033[1m" + "Real root calculator for quadratic functions" +
+          "\033[0;0m" + "\nby brussels-sprout\n")
     # weird things make it bold
 
 
-def input_():  # get input of four numbers
+def input_():
     print("For f(x) = ax² + bx + c, where a ≠ 0, input:")
-    return input("a = "), input("b = "), input("c = "), input("Number of decimal places to give result to: ")
+    a = input("a = ")
+    b = input("b = ")
+    c = input("c = ")
+    dp = input("Number of decimal places to give result to: ")
+    return a, b, c, dp
 
 
 def check_digit(i, j, z, w):  # checks if i, j, z, and w are digits
-    return i.lstrip("-").replace(".", "", 1).isdigit() and j.lstrip("-").replace(".", "", 1).isdigit() and \
-           z.lstrip("-").replace(".", "", 1).isdigit() and w.lstrip("-").replace(".", "", 1).isdigit()
+    i_bool = i.lstrip("-").replace(".", "", 1).isdigit()
+    j_bool = j.lstrip("-").replace(".", "", 1).isdigit()
+    z_bool = z.lstrip("-").replace(".", "", 1).isdigit()
+    w_bool = w.lstrip("-").replace(".", "", 1).isdigit()
+    return i_bool, j_bool, z_bool, w_bool
 
 
-def check_nonzero(i):  # checks if i (string digit or float or integer) is not equal to zero
+# checks if i (string digit or float or integer) is not equal to zero
+def check_nonzero(i):
     return float(i) != 0
 
 
-def check_positive_int(i):  # checks if i (string digit or float or integer) is a positive integer
+# checks if i (string digit or float or integer) is a positive integer
+def check_positive_int(i):
     if i == float("inf"):
         return True
     else:
         return i > 0 and i.is_integer()
 
 
-def str_to_float(i, j, z, w):  # turns  i, j, and z (strings) into floats
+# turns  i, j, and z (strings) into floats
+def str_to_float(i, j, z, w):
     return float(i), float(j), float(z), float(w)
 
 
-def digit_to_int(i):  # turns i (digit) to an integer
+# turns i (digit) to an integer
+def digit_to_int(i):
     return int(i)
 
 
-def operation(i, j, z, w):  # processes determinant (i), b (j), and a (z) of a f(x)  and returns result with a certain number
-    # of decimal places (w)
+# processes determinant (i), b (j), and a (z) of a f(x)
+# and returns result with a certain number of decimal places (w)
+def operation(i, j, z, w):
     if i > 0:
         x1 = (-j + i ** (1 / 2)) / 2 * z
         x2 = (-j - i ** (1 / 2)) / 2 * z
@@ -49,12 +62,16 @@ def operation(i, j, z, w):  # processes determinant (i), b (j), and a (z) of a f
         print("For f(x) = 0, x ∉ ℝ.")
 
 
-def determinant(i, j, z):  # calculates the determinant of a f(x) = ax² + bx + c, where a is i, b is j, and c is z
+# calculates the determinant of a f(x) = ax² + bx + c, where
+# a is i, b is j, and c is z
+def determinant(i, j, z):
     return j ** 2 - 4 * i * z
 
 
 def end():
-    if input("\nInput any character(s) to make a new calculation or simply press ENTER to exit: ") == "":
+    ask = input("\nInput any character(s) to make a new calculation or simply "
+                "press ENTER to exit: ")
+    if ask == "":
         print("\nDone.")
         exit()
     else:
@@ -72,16 +89,18 @@ def main():
                     operation(determinant(a, b, c), b, a, digit_to_int(dp))
                     end()
                 else:
-                    print("Please input a positive integer for the number of decimal places.")
-                    main()
+                    raise ValueError
             else:
                 print("Please input a ≠ 0.")
                 main()
         else:
-            print("Please input a ∈ ℝ, b ∈ ℝ, and c ∈ ℝ without illegal characters.")
-            main()
+            raise ValueError
     except (OverflowError, MemoryError):
         print("Number(s) too large.")
+        main()
+    except ValueError:
+        print("Please input a positive integer for the number of "
+              "decimal places.\n")
         main()
 
 
