@@ -18,11 +18,12 @@ def input_():
 
 
 def check_digit(i, j, z, w):  # checks if i, j, z, and w are digits
-    i_bool = i.lstrip("-").replace(".", "", 1).isdigit()
-    j_bool = j.lstrip("-").replace(".", "", 1).isdigit()
-    z_bool = z.lstrip("-").replace(".", "", 1).isdigit()
-    w_bool = w.lstrip("-").replace(".", "", 1).isdigit()
-    return i_bool, j_bool, z_bool, w_bool
+    to_check = [i, j, z, w]
+    checked = []
+    for element in to_check:
+        element_bool = element.lstrip("-").replace(".", "", 1).isdigit()
+        checked.append(element_bool)
+    return checked
 
 
 # checks if i (string digit or float or integer) is not equal to zero
